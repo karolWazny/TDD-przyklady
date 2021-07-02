@@ -12,9 +12,12 @@ public class MoneyTest extends TestCase {
         assertEquals(new Dollar(15), five.times(3));
     }
     @Test
-    public void testDollarEquality(){
+    public void testEquality(){
         assertTrue(new Dollar(5).equals(new Dollar(5)));
         assertFalse(new Dollar(6).equals(new Dollar(5)));
+        assertTrue(new Franc(5).equals(new Franc(5)));
+        assertFalse(new Franc(6).equals(new Franc(5)));
+        assertFalse(new Dollar(5).equals(new Franc(5)));
     }
 
     @Test
