@@ -29,7 +29,7 @@ public class Money implements Expression{
     }
 
     public Expression plus(Money addend){
-        return null;
+        return new Sum(this, addend);
     }
 
     public String currency() {
