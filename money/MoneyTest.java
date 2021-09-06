@@ -1,9 +1,22 @@
 package money;
 
 import junit.framework.TestCase;
+import org.junit.Before;
 import org.junit.Test;
 
 public class MoneyTest extends TestCase {
+    Expression fiveBucks;
+    Expression tenFrancs;
+    Bank bank;
+
+    @Before
+    public void setUp(){
+        fiveBucks = Money.dollar(5);
+        tenFrancs = Money.franc(10);
+        bank = new Bank();
+        bank.addRate("CHF", "USD", 2);
+    }
+
     @Test
     public void testDollarMultiplication(){
         Money five = Money.dollar(5);
@@ -71,11 +84,21 @@ public class MoneyTest extends TestCase {
 
     @Test
     public void testMixedAddition(){
-        Expression fiveBucks = Money.dollar(5);
-        Expression tenFrancs = Money.franc(10);
-        Bank bank = new Bank();
-        bank.addRate("CHF", "USD", 2);
         Money result = bank.reduce(fiveBucks.plus(tenFrancs), "USD");
         assertEquals(Money.dollar(10), result);
+    }
+
+    @Test
+    public void testSumPlusMoney(){
+        Expression sum = new Sum(fiveBucks, tenFrancs).plus(fiveBucks);
+        Money result = bank.reduce(sum, "USD");
+        assertEquals(Money.dollar(15), result);
+    }
+
+    @Test
+    public void testSumTimes(){
+        Expression sum = new Sum(fiveBucks, tenFrancs).times(2);
+        Money result = bank.reduce(sum, "USD");
+        assertEquals(Money.dollar(20), result);
     }
 }
